@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(& \"C:\\\\Program Files\\\\dotnet\\\\dotnet.exe\" --version)",
+      "Bash(find \"C:/Program Files\" -name \"MSBuild.exe\" 2>/dev/null | head -5; find \"C:/Program Files \\(x86\\)\" -name \"MSBuild.exe\" 2>/dev/null | head -5)",
+      "Read(//c/Program Files \\(x86\\)/**)",
+      "Bash(\"C:/Program Files \\(x86\\)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/MSBuild.exe\" --version)",
+      "Bash(find \"/\" -name \"dotnet\" -type f 2>/dev/null | grep -v \"proc\\\\|sys\" | head -10; find \"/c\" -name \"dotnet.exe\" 2>/dev/null | head -5)",
+      "Read(//c//**)",
+      "PowerShell(& \"C:\\\\Program Files\\\\dotnet\\\\dotnet.exe\" --list-sdks 2>&1)",
+      "PowerShell(& \"sqllocaldb\" info 2>&1)",
+      "PowerShell(& \"sqllocaldb\" versions 2>&1)",
+      "Bash(reg query *)",
+      "PowerShell(winget --version 2>&1)",
+      "Bash(rm -f \"c:/VeraciBot/VeraciBot/VeraciApp/Migrations/\"*.cs)",
+      "Bash(rm -f \"c:/VeraciBot/VeraciBot/VeraciLib/Migrations/\"*.cs)"
+    ]
+  }
+}

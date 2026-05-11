@@ -24,7 +24,8 @@ namespace VeraciApp.Services
         {
             if (string.IsNullOrEmpty(AppKeys.keys.sendGridKey))
             {
-                throw new Exception("Null SendGridKey");
+                Console.WriteLine($"[EmailSender] SendGridKey não configurado — e-mail para {toEmail} ignorado.");
+                return;
             }
             await Execute(AppKeys.keys.sendGridKey, subject, message, toEmail);
         }

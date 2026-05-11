@@ -152,13 +152,5 @@ namespace VeraciBot
             return await GetTranslatePhraseFromArray(refuseResponse, lang);
         }
 
-        static string[] resp = {
-            "Vá imediatamente para a cadeia, seu bolsonarista fazedor de fakenews. 17 anos de cadeia imediatamente!",
-            "Procure a carmen lucia para iniciar o curso de democracia relativa do tse e se prepara pra visita do Uber Black da PF",
-            "Ok, vou deixar passar essa só com 14 anos de cadeia, na próxima vai ser punido de verdade",
-            "Parabens por ser um gado muito obediente e só falar a verdade aprovada pelo sistema",
-            "Ahhrá... agora sim, tudo certo... ganhou TROFEU DEMOCRACIA RELATIVA do XANDÃO"
-        };
-
     }
 }

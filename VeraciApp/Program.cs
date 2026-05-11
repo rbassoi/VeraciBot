@@ -33,10 +33,10 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-builder.Services.AddDbContext<VeraciDbContext>(options => options.UseSqlServer(AppKeys.keys.dbConnection, b => b.MigrationsAssembly("VeraciApp")));
+builder.Services.AddDbContext<VeraciDbContext>(options => options.UseSqlite(AppKeys.keys.dbConnection, b => b.MigrationsAssembly("VeraciApp")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<VeraciDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();

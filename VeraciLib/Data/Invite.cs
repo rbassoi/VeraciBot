@@ -1,5 +1,4 @@
-﻿using Azure.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace VeraciBot.Data

@@ -4,7 +4,6 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Tweetinvi;
 using System.Security.Cryptography;
-using Azure.Core;
 
 namespace VeraciBot
 {

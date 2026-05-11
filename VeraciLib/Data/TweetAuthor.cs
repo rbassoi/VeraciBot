@@ -1,5 +1,4 @@
-﻿using Azure.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace VeraciBot.Data
@@ -46,7 +45,7 @@ namespace VeraciBot.Data
         public static async Task<TweetAuthor> GetTweetAuthor(VeraciDbContext dbContext, string id, string username = "", string name = "")
         {
 
-            TweetAuthor author = await dbContext.TweetAuthors.FirstOrDefaultAsync(e => e.Id == id);
+            TweetAuthor? author = await dbContext.TweetAuthors.FirstOrDefaultAsync(e => e.Id == id);
 
             if (author == null)
             {

@@ -44,7 +44,7 @@ namespace VeraciBot
 
             var services = new ServiceCollection();
 
-            services.AddDbContext<VeraciDbContext>(options => options.UseSqlServer(AppKeys.keys.dbConnection));
+            services.AddDbContext<VeraciDbContext>(options => options.UseSqlite(AppKeys.keys.dbConnection));
             var serviceProvider = services.BuildServiceProvider();
             var dbContext = serviceProvider.GetRequiredService<VeraciDbContext>();
 
@@ -66,7 +66,19 @@ namespace VeraciBot
                     using var client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AppKeys.keys.xBearerToken);
 
-                    string mentionsUrl = $"https://api.twitter.com/2/users/{AppKeys.keys.xUserId}/mentions?tweet.fields=author_id,created_at,text&start_time={startTime}";
+                    // -----------------------------------------------------------------------
+                    // TIER FREE (atual):
+                    //   Endpoint: GET /2/tweets/search/recent
+                    //   Rate limit: 1 req / 15 min — o Thread.Sleep abaixo respeita isso
+                    //   Máximo de 10 menções por ciclo
+                    // -----------------------------------------------------------------------
+                    // TIER BASIC ou superior (para trocar, comente a linha FREE e
+                    // descomente a linha BASIC, e ajuste o Thread.Sleep para 60000):
+                    //   Endpoint: GET /2/users/:id/mentions
+                    //   Rate limit: 180 req / 15 min — pode verificar a cada 1 minuto
+                    // -----------------------------------------------------------------------
+                    string mentionsUrl = $"https://api.twitter.com/2/tweets/search/recent?query=%40{AppKeys.keys.xUserName}+-is%3Aretweet+-from%3A{AppKeys.keys.xUserName}&tweet.fields=author_id,created_at,text&start_time={startTime}&max_results=10"; // FREE
+                    // string mentionsUrl = $"https://api.twitter.com/2/users/{AppKeys.keys.xUserId}/mentions?tweet.fields=author_id,created_at,text&start_time={startTime}"; // BASIC+
 
                     var response = await client.GetAsync(mentionsUrl);
                     string responseContent = await response.Content.ReadAsStringAsync();
@@ -572,6 +584,8 @@ namespace VeraciBot
                                 TweetAuthor authorA = await TweetAuthor.GetTweetAuthor(dbContext, fullThread.AuthorA, userAuthorA.Username, userAuthorA.Name);
                                 TweetAuthor authorB = await TweetAuthor.GetTweetAuthor(dbContext, fullThread.AuthorB, userAuthorB.Username, userAuthorB.Name);
 
+                                string authorAId = fullThread.AuthorA;
+                                string authorBId = fullThread.AuthorB;
                                 fullThread.AuthorA = authorA.UserName;
                                 fullThread.AuthorB = authorB.UserName;
 
@@ -605,8 +619,8 @@ namespace VeraciBot
                                             ThreadId = fullThread.Id,
                                             Text = fullThread.GetStartB(),
                                             OriginalText = fullThread.GetStartA(),
-                                            AuthorId = fullThread.AuthorB,
-                                            OriginalAuthorId = fullThread.AuthorA,
+                                            AuthorId = authorBId,
+                                            OriginalAuthorId = authorAId,
                                             Date = DateTime.UtcNow,
                                             Result = result.Result
                                         };
@@ -641,7 +655,8 @@ namespace VeraciBot
 
                 }
 
-                Thread.Sleep(60000);
+                Thread.Sleep(970000);  // FREE:  ~16 min — respeita o rate limit de 1 req/15min
+                // Thread.Sleep(60000); // BASIC: ~1 min — permitido com 180 req/15min
 
             }
 
